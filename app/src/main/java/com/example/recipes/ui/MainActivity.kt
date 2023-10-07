@@ -10,6 +10,7 @@ import com.example.recipes.R
 import com.example.recipes.data.remote.RecipesClient
 import com.example.recipes.data.repository.Repository
 import com.example.recipes.databinding.ActivityMainBinding
+import com.example.recipes.utils.visibleIf
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             recipesAdapter.submitList(homeState.recipes)
             if (homeState.error.isNotEmpty())
                 Log.d("Recipes", homeState.error)
+            binding.progressBar.visibleIf(homeState.loading)
         }
     }
 
