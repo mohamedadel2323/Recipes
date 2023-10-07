@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             recipesAdapter.submitList(homeState.recipes)
             if (homeState.error.isNotEmpty())
                 Log.d("Recipes", homeState.error)
-            binding.progressBar.visibleIf(homeState.loading)
+            binding.progressBar visibleIf homeState.loading
         }
     }
 
