@@ -2,7 +2,9 @@ package com.example.recipes.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.recipes.MyApplication
 import com.example.recipes.R
@@ -15,9 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: RecipesViewModel by lazy {
-        (application as MyApplication).dependenciesProvider.getRecipesViewModelFactory().create(
-            RecipesViewModel::class.java
-        )
+        ViewModelProvider(this, (application as MyApplication).dependenciesProvider.getRecipesViewModelFactory())[RecipesViewModel::class.java]
     }
     private lateinit var recipesAdapter: RecipesAdapter
     private lateinit var binding: ActivityMainBinding
@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
         initUi()
         listeners()
         viewModel.homeState.observe(this) { homeState ->
+            Log.e("MainActivity", "Triggered")
+            Log.e("MainActivity", homeState.recipes.toString())
+
             recipesAdapter.submitList(homeState.recipes)
             binding.progressBar visibleIf homeState.loading
             binding.getRecipesBtn visibleIf homeState.recipes.isEmpty()

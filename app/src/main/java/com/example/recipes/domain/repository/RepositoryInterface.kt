@@ -1,7 +1,6 @@
-package com.example.recipes.data.repository
+package com.example.recipes.domain.repository
 
 import com.example.recipes.utils.Response
-import kotlinx.coroutines.flow.Flow
 
 interface RepositoryInterface {
     suspend fun <T> getAllRecipes(): Response<T>

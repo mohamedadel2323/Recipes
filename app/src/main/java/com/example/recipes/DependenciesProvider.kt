@@ -2,7 +2,7 @@ package com.example.recipes
 
 import com.example.recipes.data.remote.RecipesClient
 import com.example.recipes.data.remote.RecipesService
-import com.example.recipes.domain.repository.Repository
+import com.example.recipes.data.repository.Repository
 import com.example.recipes.domain.usecases.GetAllRecipesUseCase
 import com.example.recipes.ui.RecipesViewModelFactory
 import com.example.recipes.utils.Constants
