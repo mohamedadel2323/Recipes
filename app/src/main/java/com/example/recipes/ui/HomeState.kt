@@ -1,10 +1,15 @@
 package com.example.recipes.ui
 
-import com.example.recipes.data.dto.RecipesResponse
-import com.example.recipes.data.dto.RecipesResponseItem
+import com.example.recipes.ui.models.RecipeUiModel
 
-data class HomeState(
-    val loading: Boolean = true,
-    val recipes: List<RecipesResponseItem> = listOf(),
-    val error: String = ""
-)
+sealed class HomeState {
+    data class Display(
+        val loading: Boolean = false,
+        val recipes: List<RecipeUiModel> = listOf(),
+    ) : HomeState()
+
+    data class Error(
+        val error: String = ""
+    )
+}
+

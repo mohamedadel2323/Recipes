@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Recipes</string>
+    <string name="get_all_recipes">Get All Recipes</string>
 </resources>

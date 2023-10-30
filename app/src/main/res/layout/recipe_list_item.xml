@@ -8,15 +8,15 @@
 
         <variable
             name="recipe"
-            type="com.example.recipes.data.dto.RecipesResponseItem" />
+            type="com.example.recipes.ui.models.RecipeUiModel" />
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_marginStart="15dp"
         android:id="@+id/categoryCard"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
+        android:layout_marginStart="15dp"
         android:elevation="6dp"
         app:cardCornerRadius="20dp"
         app:cardUseCompatPadding="true"
@@ -33,21 +33,21 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image"
-                image_loader="@{recipe.image}"
+                image_loader="@{recipe.recipeImage}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                tools:src="@android:drawable/alert_light_frame"
                 android:layout_weight="3"
                 app:civ_border_color="@color/black"
-                app:civ_border_width="1dp" />
+                app:civ_border_width="1dp"
+                tools:src="@android:drawable/alert_light_frame" />
 
             <TextView
                 android:id="@+id/title"
                 style="@style/TextViewStyle"
-                android:layout_weight="3"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:text="@{recipe.name}"
+                android:layout_weight="3"
+                android:text="@{recipe.recipeName}"
                 android:textAlignment="center"
                 android:textSize="14sp"
                 android:textStyle="normal"

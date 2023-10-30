@@ -5,55 +5,57 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.recipes.data.dto.RecipesResponse
-import com.example.recipes.data.repository.RepositoryInterface
+import com.example.recipes.domain.models.RecipeDomainModel
+import com.example.recipes.domain.usecases.GetAllRecipesUseCase
+import com.example.recipes.ui.mappers.toUiModel
 import com.example.recipes.utils.Response
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class RecipesViewModel(private val repository: RepositoryInterface) : ViewModel() {
+class RecipesViewModel(private val getAllRecipesUseCase: GetAllRecipesUseCase) : ViewModel() {
 
-    private var _homeState = MutableLiveData(HomeState())
-    val homeState: LiveData<HomeState>
+    private var _homeState = MutableLiveData(HomeState.Display())
+    val homeState: LiveData<HomeState.Display>
         get() = _homeState
+    private var _errorState: MutableSharedFlow<HomeState.Error> = MutableSharedFlow()
+    val errorState = _errorState.asSharedFlow()
 
-    init {
-        getAllRecipes()
+    fun senEvent(recipesEvent: RecipesEvent){
+        when(recipesEvent){
+            is RecipesEvent.GetRecipes ->{
+                getAllRecipes()
+            }
+        }
     }
 
     private fun getAllRecipes() {
         viewModelScope.launch(Dispatchers.IO) {
             _homeState.postValue(_homeState.value?.copy(loading = true))
-            repository.getAllRecipes<RecipesResponse>().collectLatest {
-                when (it) {
-                    is Response.Success -> {
-                        _homeState.postValue(it.data?.let { recipesResponse ->
-                            _homeState.value?.copy(
-                                loading = false,
-                                recipes = recipesResponse
-                            ) ?: HomeState(recipes = listOf())
-                        })
-                    }
 
-                    is Response.Failure -> {
-                        _homeState.postValue(it.error?.let { error ->
-                            _homeState.value?.copy(
-                                loading = false,
-                                error = error
-                            ) ?: HomeState(recipes = listOf())
-                        })
+            getAllRecipesUseCase<List<RecipeDomainModel>>().apply {
+                when (this) {
+                    is Response.Success -> {
+                        data?.let { recipes ->
+                            _homeState.postValue(_homeState.value?.copy(recipes = recipes.map { it.toUiModel() }, loading = false))
+                        }
                     }
-                    else -> {}
+                    is Response.Failure -> {
+                        _homeState.postValue(_homeState.value?.copy(loading = false))
+                        error?.let { _errorState.emit(HomeState.Error(it)) }
+                    }
                 }
             }
         }
     }
 }
-class RecipesViewModelFactory(private val repository: RepositoryInterface) : ViewModelProvider.Factory {
+
+class RecipesViewModelFactory(private val getAllRecipesUseCase: GetAllRecipesUseCase) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass::class.java.isInstance(RecipesViewModel::class.java)) {
-            RecipesViewModel(repository) as T
+            RecipesViewModel(getAllRecipesUseCase) as T
         } else {
             throw IllegalArgumentException("View Model class not found")
         }
