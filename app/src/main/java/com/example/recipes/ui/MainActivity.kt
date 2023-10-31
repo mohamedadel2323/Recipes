@@ -4,21 +4,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.recipes.MyApplication
 import com.example.recipes.R
 import com.example.recipes.databinding.ActivityMainBinding
 import com.example.recipes.utils.collectLifeCycleFlow
 import com.example.recipes.utils.visibleIf
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class MainActivity : AppCompatActivity() {
-
-    private val viewModel: RecipesViewModel by lazy {
-        ViewModelProvider(this, (application as MyApplication).dependenciesProvider.getRecipesViewModelFactory())[RecipesViewModel::class.java]
-    }
+    private val viewModel: RecipesViewModel by lazy { getViewModel() }
     private lateinit var recipesAdapter: RecipesAdapter
     private lateinit var binding: ActivityMainBinding
 
