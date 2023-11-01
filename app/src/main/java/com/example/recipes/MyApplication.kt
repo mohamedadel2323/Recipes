@@ -1,7 +1,7 @@
 package com.example.recipes
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class MyApplication : Application(){
-    val dependenciesProvider = DependenciesProvider()
-}
+@HiltAndroidApp
+class MyApplication : Application()
