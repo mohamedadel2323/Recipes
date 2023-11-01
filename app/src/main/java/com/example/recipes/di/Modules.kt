@@ -31,3 +31,19 @@ val viewModels = module {
     factory { RecipesViewModelFactory(getAllRecipesUseCase = get()) }
     viewModel { RecipesViewModel(getAllRecipesUseCase = get()) }
 }
+
+//val activityModule = module {
+//    scope<MainActivity> {
+//        scoped {
+//            Retrofit.Builder()
+//                .baseUrl(Constants.BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+//                .build().create(RecipesService::class.java)
+//        }
+//        scoped<RemoteSource> { RecipesClient(recipesService = get()) }
+//        scoped<RepositoryInterface> { Repository(recipesClient = get()) }
+//        scoped { GetAllRecipesUseCase(repository = get()) }
+//        factory { RecipesViewModelFactory(getAllRecipesUseCase = get()) }
+//        viewModel { RecipesViewModel(getAllRecipesUseCase = get()) }
+//    }
+//}
