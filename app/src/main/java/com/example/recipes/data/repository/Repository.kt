@@ -9,8 +9,7 @@ import java.lang.Exception
 
 class Repository(private val recipesClient: RemoteSource) : RepositoryInterface {
     override suspend fun <T> getAllRecipes(): Response<T> =
-        try {
-            Response.Success((recipesClient.getAllRecipes<RecipesResponse>().data?.map { it.toDomainModel() }) as T)
+        try { Response.Success((recipesClient.getAllRecipes<RecipesResponse>().data?.map { it.toDomainModel() }) as T)
         } catch (e: Exception) {
             Response.Failure(e.message ?: "Unknown Error")
         }

@@ -9,11 +9,7 @@ import com.example.recipes.databinding.ActivityMainBinding
 import com.example.recipes.utils.collectLifeCycleFlow
 import com.example.recipes.utils.visibleIf
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.scope.AndroidScopeComponent
-import org.koin.androidx.scope.activityScope
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import org.koin.core.scope.Scope
-
 
 class MainActivity : AppCompatActivity()/*, AndroidScopeComponent*/ {
 //    override val scope: Scope by activityScope()
